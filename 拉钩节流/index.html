@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  body{
+    height: 8000px;
+  }
+</style>
+<body>
+  <script>
+    function scroll(){
+    }
+    function myThrottle(fn,timer){
+      let nextTime = 0
+      let setTim = null
+      return function(...args){
+        let nowTime = new Date()
+        let differ = timer - (nowTime - nextTime)
+        console.log(differ)
+        if(differ<=0){
+          console.log(121212)
+          //这块的逻辑是为了防止下次滚动的时候和定时器执行回调函数时间重复导致执行两次
+          clearTimeout(setTim)
+          setTim = null
+          fn.apply(this,args)
+          nextTime = new Date()
+        }else{
+          if(setTim) return 
+          
+          setTim = setTimeout(()=>{
+            console.log(131313)
+            fn.apply(this,args)
+            setTim = null
+            nextTime = new Date()
+          },differ)
+        }
+      }
+    }
+    window.onscroll = myThrottle(scroll,2000)
+  </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button id="btn">点击</button>
+  <script>
+    let btn = document.querySelector('#btn')
+    function  myDebounce(fn,timer=300,immediate=true) {
+        let setTim = null
+        return function(...args){
+          let init = immediate && !setTim
+          if(init){
+            fn.apply(this,args)
+          }
+          if(setTim) clearTimeout(setTim)
+          setTim = setTimeout(()=>{
+            setTim = null
+            immediate?null:fn.apply(this,args)
+          },timer)
+        }
+    }
+    function btnClick(event){
+      console.log(this,event)
+    }
+    btn.addEventListener('click',myDebounce(btnClick,1000,false))
+  </script>
+</body>
+</html>

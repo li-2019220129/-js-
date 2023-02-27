@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+var decodeString = function (c) {
+    let res = []
+    let flag = false
+    let strin = []
+    let ans = []
+    let str = ''
+    let resout = ''
+    let s = c.split('')
+    for (let i = 0; i < s.length; i++) {
+        if (s[i] === '[') {
+            let num = ''
+            for(let j=i-1;j>=0;j--){
+                if(!Number.isNaN(+s[j])){
+                    num+=num
+                }else{
+                    break
+                }
+            }
+            res.push(num.split('').reverse().join(''))
+            flag = true
+            if (str != '') {
+                strin.push(str)
+                str = ''
+            }
+        } else if (s[i] === ']') {
+            ans.push(str)
+            str = ''
+            let string = ans.pop()
+            let num = (+res.pop())
+            if (!strin.length) {
+                for (let i = 0; i < num; i++) {
+                    resout += string
+                }
+            } else {
+                str += strin.pop()
+                for (let i = 0; i < num; i++) {
+                    str += string
+                }
+                ans.push(str)
+            }
+            flag = false
+        } else if (/[a-z]/.test(s[i]) && flag) {
+            str += s[i]
+        } else if (/[a-z]/.test(s[i]) && res.length === 0 && ans.length === 0) {
+            resout += s[i]
+        }
+    }
+    return resout
+};
+decodeString("100[leetcode]")
+  </script>
+</body>
+</html>
